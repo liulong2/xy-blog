@@ -1,0 +1,33 @@
+server:
+  port: 1001
+  servlet:
+#    context-path: /${project.artifactId}
+    context-path: /liu
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+spring:
+  application:
+    name: lalal
+  datasource:
+    url: jdbc:mysql://localhost:3306/xy_blog?characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis-plus:
+  mapper-locations: classpath:com/xybbz/**/**/mapper/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: assign_id
+      insert-strategy: not_null
+      update-strategy: not_null
+      select-strategy: not_empty
+      #驼峰下划线转换
+      table-underline: true
+      # 逻辑删除配置
+      # 逻辑删除全局值（1表示已删除，这也是Mybatis Plus的默认配置）
+      logic-delete-value: 1
+      # 逻辑未删除全局值（0表示未删除，这也是Mybatis Plus的默认配置）
+      logic-not-delete-value: 0
