@@ -18,6 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -117,6 +118,6 @@ public class CorsConfig implements WebMvcConfigurer {
     //调用拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/*");
+        registry.addInterceptor(new WebContentInterceptor()).addPathPatterns("/*");
     }
 }

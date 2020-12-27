@@ -13,7 +13,7 @@ import org.springframework.lang.Nullable;
 @Slf4j
 public class SpringUtil implements ApplicationContextAware {
 
-    private static ApplicationContext context;
+    public static ApplicationContext context;
 
     /**
      * 发送事件

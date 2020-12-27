@@ -1,5 +1,6 @@
 package com.xybbz.security.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.liu.entity.CheckUserEntity;
 import lombok.SneakyThrows;
@@ -51,6 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
     // 成功验证后调用的方法 reason authentication failed
     // 如果验证成功，就生成token并返回
+    @SneakyThrows
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
@@ -64,7 +66,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             role = authority.getAuthority();
         }
         //根据权限获得token
-        String token = TestJwtUtils.createToken(user.getUsername(), role);
+        String token = TestJwtUtils.createToken(user, role);
+        if (StrUtil.isBlank(token)) {
+            throw new Exception("登陆过期");
+        }
         //也可以不传权限
         //String token = TestJwtUtils.createToken(jwtUser.getUsername(), false);
         // 返回创建成功的token

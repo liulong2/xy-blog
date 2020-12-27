@@ -2,7 +2,6 @@ package com.xybbz.event;
 
 import com.xybbz.constant.LogConstant;
 import com.xybbz.logentity.LogApi;
-import com.xybbz.logentity.LogLocal;
 import com.xybbz.logentity.LogLocalApi;
 import com.xybbz.modules.log.mapper.LogApiDAO;
 import com.xybbz.modules.log.mapper.LogDAO;

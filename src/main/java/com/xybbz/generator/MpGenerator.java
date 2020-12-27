@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xybbz.generator.PageConstant.BASIS;
+
 /**
  * 简陋的代码生成器
  * @author 刘梦龙
@@ -163,12 +165,14 @@ public class MpGenerator {
         //生成 @RestController 控制器
         strategy.setRestControllerStyle(true);
         //设置自定义继承的Entity类全称，带包名
-        //strategy.setSuperEntityClass("com.jiangfeixiang.mpdemo.BaseEntity");
+        strategy.setSuperEntityClass("com.xybbz.utils.BaseEntity");
         //设置自定义继承的Controller类全称，带包名
         //strategy.setSuperControllerClass("com.wxgzh.config.AbstractHttp");
         //strategy.setSuperServiceImplClass();
         //设置自定义基础的Entity类，公共字段  解开后typeid注解不存在
-        //strategy.setSuperEntityColumns("id");
+
+        BASIS.forEach(strategy::setSuperEntityColumns);
+
         //驼峰转连字符
         strategy.setControllerMappingHyphenStyle(true);
         //表名前缀pc.getModuleName() +

@@ -1,10 +1,17 @@
 package com.xybbz.security.config;
 
-import com.liu.entity.CheckUserEntity;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import com.xybbz.auth.entity.UserBlog;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.User;
 
+import javax.xml.crypto.Data;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,31 +26,31 @@ public class TestJwtUtils {
 
     public static final String SUBJECT = "liu";
 
-    //失效时间
+    //失效时间 使用平台过期时长
     public static final long EXPIRITION = 1000 * 24 * 60 * 60 * 7;
 
     //密码岩  可以用方法进行生成
     public static final String APPSECRET_KEY = "liu_secret";
 
     //角色
-    private static final String ROLE_CLAIMS = "rol";
+//    private static final String ROLE_CLAIMS = "rol";
 
 
-    public static String generateJsonWebToken(CheckUserEntity checkUserEntity) {
-        if (checkUserEntity.getUserId() == null || checkUserEntity.getUserName() == null /*|| dateUserEntity.getFaceImage() == null*/) {
+    public static String generateJsonWebToken(UserBlog userBlog, String appSecretKey) {
+        if (userBlog.getId() == null || userBlog.getUserName() == null /*|| dateUserEntity.getFaceImage() == null*/) {
             return null;
         }
         Map<String,Object> map = new HashMap<>();
-        map.put(ROLE_CLAIMS, "rol");
+//        map.put(ROLE_CLAIMS, "rol");
 
         String token = Jwts.builder() // 创建 JWT 对象
                 .setSubject(SUBJECT)  // 设置主题（声明信息,作者）
                 .setClaims(map)
-                .claim("userId", checkUserEntity.getUserId())
-                .claim("userName", checkUserEntity.getUserName())
-                .claim("password", checkUserEntity.getPassword())
+                .claim("userId", userBlog.getId())
+                .claim("userName", userBlog.getUserName())
+                .claim("password", userBlog.getPassword())
                 //创建时间
-                .setIssuedAt(new Date())
+                .setIssuedAt(DateUtil.date())
                 //签发时间
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRITION))
                 //签名方法 两个参数分别是签名算法和自定义的签名Key（盐）。
@@ -51,33 +58,38 @@ public class TestJwtUtils {
                 // 前两种形式均存入builder的keyBytes属性，
                 // 后一种形式存入builder的key属性。
                 // 如果是第二种（及String类型）的key，则将其进行base64解码获得byte[]
-                .signWith(SignatureAlgorithm.HS256, APPSECRET_KEY).compact();
+                .signWith(getKey(appSecretKey)).compact();
+
         return token;
     }
     /**
      * 生成token
-     * @param username
-     * @param role
+     * @param user
+     * @param appSecretKey
      * @return
      */
-    public static String createToken(String username,String role) {
+    public static String createToken(User user, String appSecretKey) {
+        if (user.getUsername() == null || user.getAuthorities() == null) {
+            return null;
+        }
         Map<String,Object> map = new HashMap<>();
-        map.put(ROLE_CLAIMS, role);
-        String token = Jwts
+        user.getAuthorities().forEach(r -> map.put(ROLE_CLAIMS, r));
+        return Jwts
                 .builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
                 .setClaims(map)
-                .claim("username",username)
+                .claim("username",user.getUsername())
+                .claim("role_id",user.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRITION))
-                .signWith(SignatureAlgorithm.HS256, APPSECRET_KEY).compact();
-        return token;
+                .signWith(getKey(appSecretKey)).compact();
     }
 
     //检查token 生成签名
-    public static Claims checkJWT(String token) {
+    public static Claims checkJWT(String token,String appSecretKey) {
         try {
-            final Claims claims = Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
+            final Claims claims = Jwts.parserBuilder().setSigningKey(getKey(appSecretKey))
+                    .build().parseClaimsJws(token).getBody();
             return claims;
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,12 +99,14 @@ public class TestJwtUtils {
 
     /**
      * 获取用户名
-     * @param token
+     * @param token token
+     * @param appSecretKey 数字签名秘钥
      * @return
      */
-    // TODO: 2020/5/26  这个代码 通过拦截器进行拦截获得   看看公司代码是怎么写的
-    public static String getUsername(String token){
-        Claims claims = Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
+    // TODO: 2020/5/26  这个代码 通过拦截器进行拦截获得
+    public static String getUsername(String token,String appSecretKey){
+        Claims claims = Jwts.parserBuilder().setSigningKey(getKey(appSecretKey)).build()
+                .parseClaimsJws(token).getBody();
         return claims.get("username").toString();
     }
 
@@ -102,8 +116,8 @@ public class TestJwtUtils {
      * @return
      */
     public static String getUserRole(String token){
-        Claims claims = Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
-        return claims.get("rol").toString();
+        Claims claims = Jwts.parserBuilder().setSigningKey(APPSECRET_KEY).build().parseClaimsJws(token).getBody();
+        return claims.get("role_id").toString();
     }
 
     /**
@@ -112,8 +126,13 @@ public class TestJwtUtils {
      * @return
      */
     public static boolean isExpiration(String token){
-        Claims claims = Jwts.parser().setSigningKey(APPSECRET_KEY).parseClaimsJws(token).getBody();
-        return claims.getExpiration().before(new Date());
+        Claims claims = Jwts.parserBuilder().setSigningKey(APPSECRET_KEY).build().parseClaimsJws(token).getBody();
+        return claims.getExpiration().before(DateUtil.date());
+    }
+
+    private static Key getKey(String appSecretKey) {
+        byte[] keyBytes = Decoders.BASE64.decode(appSecretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     /*public static void main(String[] args) {

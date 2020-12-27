@@ -15,7 +15,6 @@ public class MySqlTypeConvertConfig extends MySqlTypeConvert {
         if (fieldType.toLowerCase().contains("datetime")) {
             return DbColumnType.LOCAL_TIME;
         }
-
         return super.processTypeConvert(globalConfig, fieldType);
     }
 }

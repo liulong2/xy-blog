@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
+
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;

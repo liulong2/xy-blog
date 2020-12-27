@@ -1,6 +1,6 @@
 package ${package.Controller};
 
-
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import ${package.Service}.${table.serviceName};
@@ -30,6 +30,7 @@ import ${superControllerClassPackage};
 @Controller
 </#if>
 <#--entity 名字不能在这里显示-->
+@Api(value = "${table.comment!}", tags = "${table.comment!}表接口")
 @RequestMapping("<#--<#if package.ModuleName??>/${package.ModuleName}</#if>-->/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen?replace("-","/")}<#else>${table.entityPath}</#if>")
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>

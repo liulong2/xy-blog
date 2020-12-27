@@ -90,6 +90,7 @@ public class ${entity} implements Serializable {
     <#if (logicDeleteFieldName!"") == field.name>
     @TableLogic
     </#if>
+<#--    执行判断是否是重复字段 ,如果是 可以不进行生成,从而集成-->
     private ${field.propertyType} ${field.propertyName};
 </#list>
 <#------------  END 字段循环遍历  ---------->
