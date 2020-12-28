@@ -3,6 +3,7 @@ package com.xybbz.security.config;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.xybbz.auth.entity.UserBlog;
+import com.xybbz.body.entity.PlatformNew;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,27 +17,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TestJwtUtils {
+public class JwtNewUtils {
 
-    //token请求头
-    public static final String TOKEN_HEADEA = "Authorization";
+    //token请求头 作者
+    public static final String TOKEN_HEADER = "Authorization";
 
     //令牌前缀
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    public static final String SUBJECT = "liu";
+//    public static final String SUBJECT = "liu";
 
     //失效时间 使用平台过期时长
-    public static final long EXPIRITION = 1000 * 24 * 60 * 60 * 7;
+//    public static final long EXPIRITION = 1000 * 24 * 60 * 60 * 7;
 
     //密码岩  可以用方法进行生成
-    public static final String APPSECRET_KEY = "liu_secret";
+//    public static final String APPSECRET_KEY = "liu_secret";
 
     //角色
-//    private static final String ROLE_CLAIMS = "rol";
+    private static final String ROLE_CLAIMS = "rol";
 
 
-    public static String generateJsonWebToken(UserBlog userBlog, String appSecretKey) {
+    public static String generateJsonWebToken(UserBlog userBlog, String appSecretKey, PlatformNew platformNew) {
         if (userBlog.getId() == null || userBlog.getUserName() == null /*|| dateUserEntity.getFaceImage() == null*/) {
             return null;
         }
@@ -44,7 +45,7 @@ public class TestJwtUtils {
 //        map.put(ROLE_CLAIMS, "rol");
 
         String token = Jwts.builder() // 创建 JWT 对象
-                .setSubject(SUBJECT)  // 设置主题（声明信息,作者）
+                .setSubject(platformNew.getAuthor())  // 设置主题（声明信息,作者）
                 .setClaims(map)
                 .claim("userId", userBlog.getId())
                 .claim("userName", userBlog.getUserName())
@@ -52,7 +53,7 @@ public class TestJwtUtils {
                 //创建时间
                 .setIssuedAt(DateUtil.date())
                 //签发时间
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRITION))
+                .setExpiration(new Date(System.currentTimeMillis() + (platformNew.getExpirationTime() * 1000)))
                 //签名方法 两个参数分别是签名算法和自定义的签名Key（盐）。
                 // 签名key可以byte[] 、String及Key的形式传入。
                 // 前两种形式均存入builder的keyBytes属性，
@@ -65,10 +66,10 @@ public class TestJwtUtils {
     /**
      * 生成token
      * @param user
-     * @param appSecretKey
+     * @param platformNew
      * @return
      */
-    public static String createToken(User user, String appSecretKey) {
+    public static String createToken(User user,PlatformNew platformNew) {
         if (user.getUsername() == null || user.getAuthorities() == null) {
             return null;
         }
@@ -76,13 +77,13 @@ public class TestJwtUtils {
         user.getAuthorities().forEach(r -> map.put(ROLE_CLAIMS, r));
         return Jwts
                 .builder()
-                .setSubject(user.getUsername())
-                .setClaims(map)
+                .setSubject(platformNew.getAuthor())
+//                .setClaims(map)
                 .claim("username",user.getUsername())
                 .claim("role_id",user.getAuthorities())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRITION))
-                .signWith(getKey(appSecretKey)).compact();
+                .setExpiration(new Date(System.currentTimeMillis() + (platformNew.getExpirationTime() * 1000)))
+                .signWith(getKey(platformNew.getJwtKey())).compact();
     }
 
     //检查token 生成签名
@@ -115,8 +116,8 @@ public class TestJwtUtils {
      * @param token
      * @return
      */
-    public static String getUserRole(String token){
-        Claims claims = Jwts.parserBuilder().setSigningKey(APPSECRET_KEY).build().parseClaimsJws(token).getBody();
+    public static String getUserRole(String token,String appSecretKey){
+        Claims claims = Jwts.parserBuilder().setSigningKey(appSecretKey).build().parseClaimsJws(token).getBody();
         return claims.get("role_id").toString();
     }
 
@@ -125,8 +126,8 @@ public class TestJwtUtils {
      * @param token
      * @return
      */
-    public static boolean isExpiration(String token){
-        Claims claims = Jwts.parserBuilder().setSigningKey(APPSECRET_KEY).build().parseClaimsJws(token).getBody();
+    public static boolean isExpiration(String token,String appSecretKey){
+        Claims claims = Jwts.parserBuilder().setSigningKey(appSecretKey).build().parseClaimsJws(token).getBody();
         return claims.getExpiration().before(DateUtil.date());
     }
 

@@ -1,13 +1,13 @@
 package com.xybbz.body.dto;
 
-import com.xybbz.body.entity.PlatformNew;
+import com.xybbz.body.entity.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 平台信息表
+ * 用户角色表
  * </p>
  *
  * @author liu
@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class PlatformNewDTO extends PlatformNew {
+public class RoleDTO extends Role {
 
     private static final long serialVersionUID = 1L;
 

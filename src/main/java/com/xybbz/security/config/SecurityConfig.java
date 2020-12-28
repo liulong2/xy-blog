@@ -72,6 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .formLogin()
+                .loginProcessingUrl("/auth/login")
+                .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // 不需要session  可以在yml文件中配置

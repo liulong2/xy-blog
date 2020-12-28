@@ -23,7 +23,7 @@ public class NormalLogSend {
         HttpServletRequest request = WebServletUtil.getRequest();
         LogBusiness logBusiness = new LogBusiness();
         logBusiness.setLogLevel(level);
-        logBusiness.setLogId(id);
+        logBusiness.setLogId(Long.valueOf(id));
         logBusiness.setLogData(data);
         Thread thread = Thread.currentThread();
         StackTraceElement[] stackTrace = thread.getStackTrace();

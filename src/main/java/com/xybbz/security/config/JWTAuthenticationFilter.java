@@ -1,14 +1,15 @@
 package com.xybbz.security.config;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.liu.entity.CheckUserEntity;
+import com.xybbz.body.entity.PlatformNew;
+import com.xybbz.security.entity.CheckUserEntity;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -17,7 +18,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import static com.xybbz.util.TokenUtil.getPlatformNew;
 
 
 /**
@@ -29,6 +33,7 @@ import java.util.Collection;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
+
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         super.setFilterProcessesUrl("/auth/login");
@@ -41,8 +46,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 从输入流中获取到登录的信息
         try {
 
+            Set<Map.Entry<String, String[]>> entries = request.getParameterMap().entrySet();
+            Map<String, String> newParameter = CollectionUtil.newHashMap();
+            for (Map.Entry<String, String[]> entry : entries) {
+                String key = entry.getKey();
+                String value = entry.getValue()[0];
+                newParameter.put(key, value);
+            }
             //通过过滤器获得相应的数据,可以在此处理相应的逻辑(暂时预留出来的)
-            CheckUserEntity loginUser= JSON.parseObject(JSON.toJSONString(request.getParameterMap()), CheckUserEntity.class);
+            CheckUserEntity loginUser = JSON.parseObject(JSON.toJSONString(newParameter), CheckUserEntity.class);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                     new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword());
             return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -50,23 +62,23 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new Exception("用户信息异常");
         }
     }
+
     // 成功验证后调用的方法 reason authentication failed
-    // 如果验证成功，就生成token并返回
+    // 如果验证成功，就生成token并返回 标识
     @SneakyThrows
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult) throws IOException, ServletException {
+                                            FilterChain chain, Authentication authResult)
+            throws IOException, ServletException {
+
         User user = (User) authResult.getPrincipal();
         System.out.println("jwtUser:" + user.toString());
 
-        String role = "";
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-        for (GrantedAuthority authority : authorities){
-            role = authority.getAuthority();
-        }
+        PlatformNew platformNew = getPlatformNew(request);
+
         //根据权限获得token
-        String token = TestJwtUtils.createToken(user, role);
+        String token = JwtNewUtils.createToken(user, platformNew);
         if (StrUtil.isBlank(token)) {
             throw new Exception("登陆过期");
         }
@@ -77,13 +89,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 按照jwt的规定，最后请求的时候应该是 `Bearer token`
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
-        String tokenStr = TestJwtUtils.TOKEN_PREFIX + token;
+        String tokenStr = platformNew.getTokenPrefix() + token;
         //待修改请求头
-        response.setHeader(TestJwtUtils.TOKEN_HEADEA,tokenStr);
+        response.setHeader(JwtNewUtils.TOKEN_HEADER, tokenStr);
     }
+
     //认证失败
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException, ServletException {
         response.getWriter().write("authentication failed, reason: " + failed.getMessage());
     }
 }

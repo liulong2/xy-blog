@@ -25,7 +25,7 @@ public class XYExceptionController extends BasicErrorController {
     }
 
     @Override
-//    @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
 
         HttpStatus status = getStatus(request);

@@ -1,14 +1,14 @@
 package com.xybbz.body.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xybbz.body.entity.PlatformNew;
+import com.xybbz.body.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 /**
  * <p>
- * 平台信息表 Mapper 接口
+ * 用户角色表 Mapper 接口
  * </p>
  *
  * @author liu
@@ -17,6 +17,6 @@ import org.springframework.stereotype.Repository;
  @Mapper
  @Repository
  @Scope("prototype")
-public interface PlatformNewDAO extends BaseMapper<PlatformNew> {
+public interface RoleDAO extends BaseMapper<Role> {
 
 }

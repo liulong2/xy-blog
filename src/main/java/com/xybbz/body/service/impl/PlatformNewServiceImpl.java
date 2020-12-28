@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author liu
- * @since 2020-12-27
+ * @since 2020-12-28
  */
 @Service
 public class PlatformNewServiceImpl extends ServiceImpl<PlatformNewDAO, PlatformNew> implements PlatformNewService {

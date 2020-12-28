@@ -2,7 +2,7 @@ server:
   port: 1001
   servlet:
 #    context-path: /${project.artifactId}
-    context-path: /liu
+#    context-path: /liu
     encoding:
       force: true
       charset: utf-8

@@ -18,13 +18,14 @@
         <result column="create_time" property="createTime" />
         <result column="auth_info" property="authInfo" />
         <result column="role_info" property="roleInfo" />
+        <result column="password" property="password" />
     </resultMap>
 
 
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id, usr_avatar, user_name, user_gender, user_mailbox, user_phone, user_company, user_occupation, user_region, is_delete, update_time, create_time
+        user_id, usr_avatar, user_name, user_gender, user_mailbox, user_phone, user_company, user_occupation, user_region, is_delete, update_time, create_time, password
     </sql>
 
 

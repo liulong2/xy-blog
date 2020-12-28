@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 平台信息表
+ * 用户角色表
  * </p>
  *
  * @author liu
@@ -23,29 +23,27 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("xy_platform_new")
-@ApiModel(value="PlatformNew对象", description="平台信息表")
-public class PlatformNew implements Serializable {
+@TableName("xy_role")
+@ApiModel(value="Role对象", description="用户角色表")
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty(value = "主键id")
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
-    @ApiModelProperty(value = "过期时长")
-    private Integer expirationTime;
+    @ApiModelProperty(value = "上级角色id")
+    private Long pid;
 
-    @ApiModelProperty(value = "令牌前缀")
-    private String tokenPrefix;
+    @ApiModelProperty(value = "所有上级id(通过逗号分隔)")
+    private String relatedId;
 
-    @ApiModelProperty(value = "JWT秘钥")
-    private String jwtKey;
+    @ApiModelProperty(value = "角色标识")
+    private String roleSign;
 
-    @ApiModelProperty(value = "作者")
-    private String author;
-
-    @ApiModelProperty(value = "标识")
-    private String logo;
+    @ApiModelProperty(value = "角色名称")
+    private String roleName;
 
     @ApiModelProperty(value = "是否删除")
     private Integer isDelete;

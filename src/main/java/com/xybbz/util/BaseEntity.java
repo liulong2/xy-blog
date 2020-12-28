@@ -17,12 +17,11 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="基础信息表", description="基础信息表")
+@ApiModel(value = "基础信息表", description = "基础信息表")
 public class BaseEntity implements Serializable {
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long Id;
-
 
     @ApiModelProperty(value = "是否删除")
     private Integer isDelete;

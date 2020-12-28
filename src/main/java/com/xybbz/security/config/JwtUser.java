@@ -1,8 +1,8 @@
 package com.xybbz.security.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.liu.entity.CheckRoleEntity;
-import com.liu.entity.CheckUserEntity;
+import com.xybbz.body.entity.Role;
+import com.xybbz.security.entity.CheckUserEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,15 +21,15 @@ public class JwtUser implements UserDetails {
     private String password;
     private String nickName;
     private boolean enabled = false;
-    private List<CheckRoleEntity> roles;
+    private List<Role> roles;
     private String email;
     private String userface;
     private Timestamp regTime;
 
 
-    public JwtUser(CheckUserEntity checkUserEntity, List<CheckRoleEntity> roles) {
-        this.userId = checkUserEntity.getUserId();
+    public JwtUser(CheckUserEntity checkUserEntity, List<Role> roles) {
         this.userName = checkUserEntity.getUserName();
+        this.password = checkUserEntity.getPassword();
         this.roles = roles;
 
     }
@@ -37,8 +37,8 @@ public class JwtUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (CheckRoleEntity role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(String.valueOf(role.getId())));
         }
         return authorities;
     }
