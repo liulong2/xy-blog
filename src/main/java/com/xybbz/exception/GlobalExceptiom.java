@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.Servlet;
 import java.util.Objects;

@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 public class WebServletUtil {
+    private static int z = 0;
 
     /**
      * 获得请求
@@ -43,17 +44,24 @@ public class WebServletUtil {
             characterEncoding = StringPool.UTF_8;
         }
         try {
-            byte[] bytes = getRequestParameter(request.getInputStream()).getBytes();
-            String trim = new String(bytes, characterEncoding).trim();
+            String trim = "";
+            if (z == 0) {
+                byte[] bytes = getRequestParameter(request.getInputStream()).getBytes();
+                trim = new String(bytes, characterEncoding).trim();
+                z++;
+            }
+
             if (StrUtil.isBlank(trim)) {
                 StrBuilder strBuilder = StrUtil.strBuilder();
                 Enumeration<String> parameterNames = request.getParameterNames();
                 while (parameterNames.hasMoreElements()) {
                     String key = parameterNames.nextElement();
                     String value = request.getParameter(key);
-                    StrUtil.concat(true, strBuilder, key, "=", value, "&");
+                    strBuilder.append(StrUtil.concat(true, key, "=", value, "&"));
                 }
                 trim = StrUtil.removeSuffix(strBuilder.toString(), "&");
+            }else {
+                z = 0;
             }
             return trim.replaceAll("&amp;", "&");
         } catch (IOException e) {
@@ -83,6 +91,12 @@ public class WebServletUtil {
             }
             if (bufferedReader != null) {
                 try {
+                    if (z == 2) {
+                        z = 0;
+                    }else {
+                        z++;
+                    }
+
                     bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -30,7 +30,7 @@ public class ParameterCheckException extends DefaultErrorAttributes {
         XY result = null;
         if (error != null) {
             log.error("URL: {},error status: {}", uri, status);
-            result = XY.responseFailure(XYCodeEnum.FAILURE, "系统异常:" + status);
+            result = XY.responseFailure(XYCodeEnum.FAILURE, error + ":" + error.getMessage());
         } else {
             log.error(StrUtil.format("URL: %s, status: %d"), error);
         }

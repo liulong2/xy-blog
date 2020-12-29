@@ -20,17 +20,17 @@ import java.util.Map;
  */
 public class XYExceptionController extends BasicErrorController {
 
-    public XYExceptionController(ErrorAttributes errorAttributes, ErrorProperties errorProperties) {
-        super(errorAttributes, errorProperties);
+    public XYExceptionController(ErrorAttributes errorAttributes) {
+        super(errorAttributes, new ErrorProperties());
     }
 
     @Override
-    @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+//    @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
 
         HttpStatus status = getStatus(request);
         Map<String, Object> model = Collections
-                .unmodifiableMap(getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.TEXT_HTML)));
+                .unmodifiableMap(getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL)));
         response.setStatus(status.value());
 //        ModelAndView modelAndView = resolveErrorView(request, response, status, model);
 

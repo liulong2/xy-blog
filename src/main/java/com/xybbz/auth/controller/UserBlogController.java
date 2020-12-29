@@ -1,8 +1,15 @@
 package com.xybbz.auth.controller;
 
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.xybbz.auth.entity.UserBlog;
 import com.xybbz.auth.service.UserBlogService;
+import com.xybbz.configreturn.XY;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,5 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserBlogController {
     @Autowired
     private UserBlogService userblogService;
+
+    @ApiOperationSupport(order = 1)
+    @ApiOperation(value = "添加账号",notes = "传入各种信息")
+    @PostMapping("/add/user")
+    public XY addUser(@Validated @RequestBody UserBlog userBlog) {
+        return XY.responseStatus(userblogService.addUser(userBlog));
+    }
 
 }

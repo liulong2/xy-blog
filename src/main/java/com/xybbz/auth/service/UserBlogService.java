@@ -13,4 +13,5 @@ import com.xybbz.auth.entity.UserBlog;
  */
 public interface UserBlogService extends IService<UserBlog> {
 
+    boolean addUser(UserBlog userBlog);
 }

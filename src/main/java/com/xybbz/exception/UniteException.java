@@ -28,7 +28,7 @@ import javax.servlet.Servlet;
 @ConditionalOnClass({Servlet.class, DispatcherServlet.class})
 public class UniteException {
 
-    private final ServerProperties serverProperties;
+//    private final ServerProperties serverProperties;
 //    private final ErrorAttributes errorAttributes;
 
     @Bean
@@ -40,6 +40,6 @@ public class UniteException {
     @Bean
     @ConditionalOnMissingBean(value = ErrorController.class, search = SearchStrategy.CURRENT )
     public XYExceptionController errorController(ErrorAttributes errorAttributes) {
-        return new XYExceptionController(errorAttributes,serverProperties.getError());
+        return new XYExceptionController(errorAttributes);
     }
 }
