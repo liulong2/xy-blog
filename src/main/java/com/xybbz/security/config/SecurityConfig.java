@@ -62,18 +62,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //处理跨域问题
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()
                 // 测试用资源，需要验证了的用户才能访问
-                .antMatchers("/tasks/**")
+                /*.antMatchers("/tasks/**")
                 //authenticated  需要认证
-                .authenticated()
-                .antMatchers("/user/blog/add/user","/error").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/tasks/**")
-                .hasRole("ADMIN")
+                .authenticated()*/
+                .antMatchers("/user/blog/add/user","/error","/auth/login").permitAll()
+                /*.antMatchers(HttpMethod.DELETE, "/tasks/**")
+                .hasRole("ADMIN")*/
                 // 其他都放行了
 //                .anyRequest().permitAll()
                 .anyRequest().authenticated()
-                .and()
+                /*.and()
                 .formLogin()
-                .loginProcessingUrl("/auth/login")
+                .loginProcessingUrl("/auth/login")*/
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

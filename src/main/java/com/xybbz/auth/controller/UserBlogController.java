@@ -8,6 +8,8 @@ import com.xybbz.configreturn.XY;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,7 @@ public class UserBlogController {
     private UserBlogService userblogService;
 
     @ApiOperationSupport(order = 1)
+//    @PreAuthorize()
     @ApiOperation(value = "添加账号",notes = "传入各种信息")
     @PostMapping("/add/user")
     public XY addUser(@Validated @RequestBody UserBlog userBlog) {

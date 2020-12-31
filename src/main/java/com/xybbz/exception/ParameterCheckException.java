@@ -29,7 +29,7 @@ public class ParameterCheckException extends DefaultErrorAttributes {
         Throwable error = super.getError(webRequest);
         XY result = null;
         if (error != null) {
-            log.error("URL: {},error status: {}", uri, status);
+            log.error("URL: {},error status: {}", uri, status, error);
             result = XY.responseFailure(XYCodeEnum.FAILURE, error + ":" + error.getMessage());
         } else {
             log.error(StrUtil.format("URL: %s, status: %d"), error);
@@ -37,7 +37,6 @@ public class ParameterCheckException extends DefaultErrorAttributes {
         ExceptionLogSend.publishEvent(error,uri);
         return getMap(result);
     }
-
 
     @Nullable
     private <T> T getAttr(WebRequest webRequest, String name) {
