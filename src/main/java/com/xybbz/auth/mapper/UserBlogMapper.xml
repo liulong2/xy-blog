@@ -7,6 +7,7 @@
         <id column="user_id" property="userId" />
         <result column="usr_avatar" property="usrAvatar" />
         <result column="user_name" property="userName" />
+        <result column="user_nick_name" property="userNickName" />
         <result column="user_gender" property="userGender" />
         <result column="user_mailbox" property="userMailbox" />
         <result column="user_phone" property="userPhone" />
@@ -25,7 +26,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id, usr_avatar, user_name, user_gender, user_mailbox, user_phone, user_company, user_occupation, user_region, is_delete, update_time, create_time, password
+        user_id, usr_avatar, user_name,user_nick_name, user_gender, user_mailbox, user_phone, user_company, user_occupation, user_region, is_delete, update_time, create_time, password
     </sql>
 
 

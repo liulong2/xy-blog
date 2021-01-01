@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.xybbz.body.entity.PlatformNew;
+import com.xybbz.configreturn.XY;
 import com.xybbz.security.entity.CheckUserEntity;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,7 +58,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             CheckUserEntity loginUser = JSON.parseObject(JSON.toJSONString(newParameter), CheckUserEntity.class);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                     new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword());
-            return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            return authenticate;
         } catch (Exception e) {
             throw new Exception("用户信息异常");
         }
@@ -72,7 +74,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
 
-        User user = (User) authResult.getPrincipal();
+        JwtUser user = (JwtUser) authResult.getPrincipal();
         System.out.println("jwtUser:" + user.toString());
 
         PlatformNew platformNew = getPlatformNew(request);
@@ -92,6 +94,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String tokenStr = platformNew.getTokenPrefix() + token;
         //待修改请求头
         response.setHeader(JwtNewUtils.TOKEN_HEADER, tokenStr);
+        //添加返回值
+        JwtUser principal = (JwtUser) authResult.getPrincipal();
+        principal.setTOKEN(tokenStr);
+
+        response.getWriter().write(JSON.toJSONString(XY.responseData(principal)));
     }
 
     //认证失败

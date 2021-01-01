@@ -69,7 +69,7 @@ public class JwtNewUtils {
      * @param platformNew
      * @return
      */
-    public static String createToken(User user,PlatformNew platformNew) {
+    public static String createToken(JwtUser user,PlatformNew platformNew) {
         if (user.getUsername() == null || user.getAuthorities() == null) {
             return null;
         }

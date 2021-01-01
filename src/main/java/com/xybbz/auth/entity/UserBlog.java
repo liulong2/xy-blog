@@ -34,8 +34,11 @@ public class UserBlog extends BaseEntity {
     @ApiModelProperty(value = "头像")
     private String usrAvatar;
 
-    @ApiModelProperty(value = "昵称")
+    @ApiModelProperty(value = "登陆名称")
     private String userName;
+
+    @ApiModelProperty(value = "登陆名称")
+    private String userNickName;
 
     @ApiModelProperty(value = "密码")
     private String password;

@@ -1,9 +1,11 @@
 package com.xybbz.security.config;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xybbz.body.entity.Role;
 import com.xybbz.security.entity.CheckUserEntity;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,18 +23,20 @@ public class JwtUser implements UserDetails {
     private String userName;
     private String password;
     private String nickName;
+    private String TOKEN;
     private boolean enabled = false;
     private List<Role> roles;
     private String email;
     private String userface;
-    private Timestamp regTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date regTime;
 
 
-    public JwtUser(CheckUserEntity checkUserEntity, List<Role> roles) {
-        this.userName = checkUserEntity.getUserName();
-        this.password = checkUserEntity.getPassword();
+    public JwtUser(String userName, String password, List<Role> roles) {
+        this.userName = userName;
+        this.password = password;
         this.roles = roles;
-
     }
 
     @Override
