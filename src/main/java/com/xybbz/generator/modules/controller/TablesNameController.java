@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * <p>
- * 数据库表名 前端控制器 返回
+ * 数据库表名 前端控制器
  * </p>
  *
  * @author liu

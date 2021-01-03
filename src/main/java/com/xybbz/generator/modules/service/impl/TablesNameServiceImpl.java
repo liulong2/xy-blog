@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 数据库表名 服务实现类
+ * 数据库表名 服务实现类 
  * </p>
  *
  * @author liu
@@ -66,7 +66,7 @@ public class TablesNameServiceImpl extends BaseServiceImpl<TablesNameDAO, Tables
 
     @Override
     public boolean deleteData(List<Long> fistListLong) {
-        return deleteList(fistListLong);
+        return super.deleteList(fistListLong);
     }
 
 }

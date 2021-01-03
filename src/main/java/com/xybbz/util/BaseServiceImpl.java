@@ -46,7 +46,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>,T extends BaseEntity> exten
     public boolean deleteList(List<Long> ids) {
         List<T> baseEntities = CollectionUtil.newArrayList();
         ids.forEach(id ->{
-            T baseEntity = BeanUtils.instantiateClass(currentMapperClass());
+            Class<T> tClass = currentModelClass();
+            T baseEntity = BeanUtils.instantiateClass(tClass);
             baseEntity.setId(id);
             baseEntity.setUpdateTime(DateUtil.date());
             baseEntities.add(baseEntity);

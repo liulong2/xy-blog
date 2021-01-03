@@ -10,10 +10,12 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.xybbz.generator.table.DataSourceConfigVO;
 import com.xybbz.util.BaseEntity;
 import com.xybbz.util.BaseService;
 import com.xybbz.util.BaseServiceImpl;
 import lombok.Data;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -26,56 +28,14 @@ import static com.xybbz.generator.PageConstant.BASIS;
  * @author 刘梦龙
  */
 @Data
+@Service
 public class MpGenerator {
-
-    /**
-     * 数据库地址
-     */
-    private String url;
-
-    /**
-     * 数据库用户名
-     */
-    private String username;
-
-    /**
-     * 数据库密码
-     */
-    private String password;
-
-    /**
-     * 数据库链接驱动
-     */
-    private String driverClassName;
-
-    /**
-     * 创建路径
-     */
-    private String dirPath;
-
-    /**
-     * 设置表名
-     */
-    private String tableName;
-    /**
-     * 表前缀
-     */
-    private String prefix;
-    /**
-     * 作者
-     */
-    private String author;
-
-    /**
-     * 代码生成的包名
-     */
-    private String packageName = "com.xybbz";
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void generateByTables() throws Exception {
+    public void generateByTables(DataSourceConfigVO dataSourceConfigVO) throws Exception {
 
-        if (StrUtil.isEmpty(tableName)) {
+        if (StrUtil.isEmpty(dataSourceConfigVO.getTableName())) {
             throw new Exception("表明为空");
         }
         /**
@@ -96,9 +56,9 @@ public class MpGenerator {
         // TODO: 2020/4/5  不能修改为项目根目录路径 不然会替换当前项目修改文件
 //        String projectPath = System.getProperty("user.dir");
 //        String projectPath = System.getProperty("auth");
-        globalConfig.setOutputDir(getOutputDir());
+        globalConfig.setOutputDir(getOutputDir(dataSourceConfigVO));
         //Author设置作者
-        globalConfig.setAuthor(author);
+        globalConfig.setAuthor(dataSourceConfigVO.getAuthor());
         //是否覆盖文件
         globalConfig.setFileOverride(true);
         //生成后打开文件
@@ -134,10 +94,10 @@ public class MpGenerator {
         //自定义数据类型转换  将数据库里的字段对应到java字段上
         dataSourceConfig.setTypeConvert(new MySqlTypeConvertConfig());
         // TODO: 2020/4/5 数据库
-        dataSourceConfig.setUrl(url);
-        dataSourceConfig.setDriverName(driverClassName);
-        dataSourceConfig.setUsername(username);
-        dataSourceConfig.setPassword(password);
+        dataSourceConfig.setUrl(dataSourceConfigVO.getUrl());
+        dataSourceConfig.setDriverName(dataSourceConfigVO.getDriverClassName());
+        dataSourceConfig.setUsername(dataSourceConfigVO.getUsername());
+        dataSourceConfig.setPassword(dataSourceConfigVO.getPassword());
         mpg.setDataSource(dataSourceConfig);
 
         /**
@@ -147,7 +107,7 @@ public class MpGenerator {
         pc.setModuleName(null);
         //父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
         // TODO: 2020/4/5 修改输出包名
-        pc.setParent(prefix);
+        pc.setParent(dataSourceConfigVO.getPackageName());
         mpg.setPackageInfo(pc);
 
 
@@ -161,7 +121,8 @@ public class MpGenerator {
         //设置命名格式
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setInclude(tableName);
+        // todo 注意
+        strategy.setInclude(dataSourceConfigVO.getTableName().split(","));
 //        strategy.setSuperMapperClass("tes.com.mybatis.entity");
         //实体是否为lombok模型（默认 false）
         strategy.setEntityLombokModel(true);
@@ -181,7 +142,7 @@ public class MpGenerator {
         strategy.setControllerMappingHyphenStyle(true);
         //表名前缀pc.getModuleName() +
         // TODO: 2020/4/5 删除第一个下划线之前的字母
-        strategy.setTablePrefix(prefix);
+        strategy.setTablePrefix(dataSourceConfigVO.getPrefix());
         mpg.setStrategy(strategy);
 
 
@@ -206,7 +167,7 @@ public class MpGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！ + pc.getModuleName()
-                return getOutputDir() + "/" + packageName.replace("/", ".") + "/dto"
+                return getOutputDir(dataSourceConfigVO) + "/" + dataSourceConfigVO.getPackageName().replace(".", "/") + "/dto"
                         + "/" + tableInfo.getEntityName() + "DTO" + StringPool.DOT_JAVA;
             }
         });
@@ -217,7 +178,7 @@ public class MpGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！ + pc.getModuleName()
-                return getOutputDir() + "/" + packageName.replace("/", ".") + "/vo"
+                return getOutputDir(dataSourceConfigVO) + "/" + dataSourceConfigVO.getPackageName().replace(".", "/") + "/vo"
                         + "/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
             }
         });
@@ -256,7 +217,8 @@ public class MpGenerator {
 //        System.exit(0);
     }
 
-    private String getOutputDir() {
-        return (StrUtil.isBlank(dirPath) ? System.getProperty("user.dir") + "/xy" : dirPath) + "/src/main/java/";
+    private String getOutputDir(DataSourceConfigVO dataSourceConfigVO) {
+        return (StrUtil.isBlank(dataSourceConfigVO.getDirPath()) ?
+                System.getProperty("user.dir") + "/src/main/java/com/template/" : dataSourceConfigVO.getDirPath()) + "/src/main/java/";
     }
 }
