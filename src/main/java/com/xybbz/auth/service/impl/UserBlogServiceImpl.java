@@ -26,4 +26,12 @@ public class UserBlogServiceImpl extends ServiceImpl<UserBlogDAO, UserBlog> impl
         userBlog.setPassword(new BCryptPasswordEncoder().encode(userBlog.getPassword()));
         return save(userBlog);
     }
+
+    //不使用redis
+    @Override
+    public boolean logOut() {
+
+
+        return false;
+    }
 }

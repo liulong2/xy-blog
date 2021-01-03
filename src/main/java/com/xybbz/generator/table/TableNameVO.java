@@ -16,4 +16,12 @@ public class TableNameVO {
      * 名称
      */
     private String tableName;
+
+    /**
+     * 表备注
+     */
+    private String tableComment;
+    /**
+     * 字段名称及备注
+     */
 }

@@ -65,7 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /*.antMatchers("/tasks/**")
                 //authenticated  需要认证
                 .authenticated()*/
-                .antMatchers("/user/blog/add/user","/error","/auth/login").permitAll()
+                .antMatchers("/user/blog/add/user","/error",
+                        "/auth/login","/doc.html","/webjars/**",
+                        "/swagger-resources","/v3/**").permitAll()
                 /*.antMatchers(HttpMethod.DELETE, "/tasks/**")
                 .hasRole("ADMIN")*/
                 // 其他都放行了

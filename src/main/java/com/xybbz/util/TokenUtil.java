@@ -25,7 +25,7 @@ public class TokenUtil {
                 platformNew = platformNewService.lambdaQuery().eq(PlatformNew::getLogo, decodeStr).one();
             }
         } else {
-            platformNew.setExpirationTime(3600 * 1000);
+            platformNew.setExpirationTime(3600);
             platformNew.setJwtKey("qQwWeErRtTyYuUiIoOpPaAsSdDfFgGhHjJkKlLzZxXcCvVbBnNmM1234567890");
             platformNew.setAuthor("token");
             platformNew.setTokenPrefix(TOKEN_PREFIX);

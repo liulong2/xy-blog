@@ -34,11 +34,17 @@ public class UserBlogController {
     private UserBlogService userblogService;
 
     @ApiOperationSupport(order = 1)
-//    @PreAuthorize()
     @ApiOperation(value = "添加账号",notes = "传入各种信息")
     @PostMapping("/add/user")
     public XY addUser(@Validated @RequestBody UserBlog userBlog) {
         return XY.responseStatus(userblogService.addUser(userBlog));
+    }
+
+    @ApiOperation(value = "退出登陆")
+    @ApiOperationSupport(order = 2)
+    @PostMapping("/login/out")
+    public XY logOut() {
+        return XY.responseStatus(userblogService.logOut());
     }
 
 }

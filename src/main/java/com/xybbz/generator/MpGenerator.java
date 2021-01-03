@@ -10,6 +10,9 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.xybbz.util.BaseEntity;
+import com.xybbz.util.BaseService;
+import com.xybbz.util.BaseServiceImpl;
 import lombok.Data;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -165,10 +168,11 @@ public class MpGenerator {
         //生成 @RestController 控制器
         strategy.setRestControllerStyle(true);
         //设置自定义继承的Entity类全称，带包名
-        strategy.setSuperEntityClass("com.xybbz.utils.BaseEntity");
+        strategy.setSuperEntityClass(BaseEntity.class);
         //设置自定义继承的Controller类全称，带包名
         //strategy.setSuperControllerClass("com.wxgzh.config.AbstractHttp");
-        //strategy.setSuperServiceImplClass();
+        strategy.setSuperServiceImplClass(BaseServiceImpl.class);
+        strategy.setSuperServiceClass(BaseService.class);
         //设置自定义基础的Entity类，公共字段  解开后typeid注解不存在
 
         BASIS.forEach(strategy::setSuperEntityColumns);

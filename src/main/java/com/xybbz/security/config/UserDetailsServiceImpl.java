@@ -8,6 +8,7 @@ import com.xybbz.auth.entity.UserBlog;
 import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.body.entity.Role;
 import com.xybbz.body.service.RoleService;
+import com.xybbz.configreturn.XY;
 import com.xybbz.util.SpringUtil;
 import freemarker.template.utility.StringUtil;
 import org.slf4j.Logger;

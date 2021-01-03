@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 数据库表名
+ * 数据库连接信息
  * </p>
  *
  * @author liu
@@ -24,23 +24,22 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("xy_tables_name")
-@ApiModel(value="TablesName对象", description="数据库表名")
-public class TablesName extends BaseEntity {
+@TableName("xy_datasouce_data")
+@ApiModel(value="DatasouceData对象", description="数据库连接信息")
+public class DatasouceData extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "数据库id")
-    private Long dataSourceId;
+    @ApiModelProperty(value = "数据库地址")
+    private String jdbcUrl;
 
-    @ApiModelProperty(value = "数据库表名")
-    private String tableName;
+    @ApiModelProperty(value = "账号")
+    private String username;
 
-    @ApiModelProperty(value = "前缀")
-    private String tablePrefix;
+    @ApiModelProperty(value = "密码")
+    private String password;
 
-    @ApiModelProperty(value = "数据库表备注")
-    private String tableRemake;
-
+    @ApiModelProperty(value = "连接池")
+    private String driverClassName;
 
 }
