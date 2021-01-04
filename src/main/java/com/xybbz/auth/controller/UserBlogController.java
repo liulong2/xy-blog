@@ -47,4 +47,11 @@ public class UserBlogController {
         return XY.responseStatus(userblogService.logOut());
     }
 
+    @ApiOperationSupport(order = 1)
+    @ApiOperation(value = "验证token")
+    @PostMapping("/verification")
+    public XY verification(String token) {
+        return XY.responseStatus(userblogService.verification(token));
+    }
+
 }

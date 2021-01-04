@@ -16,4 +16,6 @@ public interface UserBlogService extends IService<UserBlog> {
     boolean addUser(UserBlog userBlog);
 
     boolean logOut();
+
+    boolean verification(String token);
 }
