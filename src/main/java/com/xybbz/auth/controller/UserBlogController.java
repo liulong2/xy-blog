@@ -2,6 +2,7 @@ package com.xybbz.auth.controller;
 
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.xybbz.annctation.ApiLog;
 import com.xybbz.auth.entity.UserBlog;
 import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.configreturn.XY;
@@ -33,6 +34,7 @@ public class UserBlogController {
     @Autowired
     private UserBlogService userblogService;
 
+    @ApiLog(value = "添加账号")
     @ApiOperationSupport(order = 1)
     @ApiOperation(value = "添加账号",notes = "传入各种信息")
     @PostMapping("/add/user")
@@ -40,6 +42,7 @@ public class UserBlogController {
         return XY.responseStatus(userblogService.addUser(userBlog));
     }
 
+    @ApiLog("退出登陆")
     @ApiOperation(value = "退出登陆")
     @ApiOperationSupport(order = 2)
     @PostMapping("/login/out")
