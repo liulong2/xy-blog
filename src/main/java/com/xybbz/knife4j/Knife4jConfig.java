@@ -1,5 +1,6 @@
 package com.xybbz.knife4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
@@ -11,6 +12,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -21,9 +23,14 @@ import static java.util.Optional.ofNullable;
 //@EnableSwagger2WebMvc
 @EnableOpenApi
 public class Knife4jConfig {
+
+    @Value("${myknife4j}")
+    public String[] apis;
+
     private static final String SPLIT = ",";
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
+        System.out.println(apis);
         Docket docket = new Docket(DocumentationType.OAS_30)
                 .apiInfo(new ApiInfoBuilder()
                         //.title("swagger-bootstrap-ui-demo RESTful APIs")
@@ -36,7 +43,7 @@ public class Knife4jConfig {
                 .groupName("3.X版本")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(basePackage("com.xybbz.auth.controller,com.xybbz.generator.modules.controller"))
+                .apis(basePackage(apis))
                 .paths(PathSelectors.any())
                 .build()
                 /*.groupName("3.X1版本")
@@ -47,14 +54,14 @@ public class Knife4jConfig {
     }
 
 
-    public static Predicate<RequestHandler> basePackage(String basePackage) {
+    public static Predicate<RequestHandler> basePackage(String[] basePackage) {
         return input -> declaringClass(input).map(handlerPackage(basePackage)).orElse(true);
     }
 
-    private static Function<Class<?>, Boolean> handlerPackage(final String basePackage) {
+    private static Function<Class<?>, Boolean> handlerPackage(final String[] basePackage) {
+
         return input -> {
-            String[] split = basePackage.split(SPLIT);
-            for (String pack :split){
+            for (String pack :basePackage){
                 boolean b = ClassUtils.getPackageName(input).startsWith(pack);
                 if (b) {
                     return true;

@@ -6,6 +6,7 @@ import com.xybbz.blog.entity.Blog;
 import com.xybbz.blog.mapper.BlogDAO;
 import com.xybbz.blog.service.BlogService;
 import com.xybbz.blog.vo.BlogVO;
+import com.xybbz.util.BaseEntity;
 import com.xybbz.util.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +47,16 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
     public IPage<Blog> blogPage(BlogVO blogVO, IPage<Blog> fistPage) {
         IPage<Blog> page = page(fistPage, new LambdaQueryWrapper<>(blogVO));
         return page;
+    }
+
+    @Override
+    public Blog detailedBlog(Long fistLong) {
+        return getById(fistLong);
+    }
+
+    @Override
+    public Blog newsBlog(Long fistLong) {
+        List<Blog> list = lambdaQuery().eq(Blog::getBlogSortId, fistLong).orderByAsc(BaseEntity::getCreateTime).list();
+        return list.get(0);
     }
 }

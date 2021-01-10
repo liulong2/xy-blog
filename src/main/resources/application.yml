@@ -17,6 +17,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
+myknife4j: com.xybbz.auth.controller, com.xybbz.auth.controller, com.xybbz.blog.controller
 
 knife4j:
   enable: true

@@ -10,14 +10,9 @@ import com.xybbz.configreturn.XY;
 import com.xybbz.util.FunUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.xybbz.blog.service.BlogService;
-
-
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -66,10 +61,27 @@ public class BlogController {
     @ApiOperation(value = "获取列表", notes = "查询条件")
     @ApiOperationSupport(order = 4)
     @ApiLog("获取列表")
+    @GetMapping("/page")
     public XY<IPage<Blog>> blogPage(@RequestBody BlogVO blogVO, Page page) {
         return XY.responseData(blogService.blogPage(blogVO,FunUtil.fistPage(page)));
     }
 
+    @ApiOperation(value = "详细信息", notes = "主键id")
+    @ApiOperationSupport(order = 5)
+    @ApiLog("详细信息")
+    @GetMapping("/detailed")
+    public XY<Blog> detailedBlog(String id) {
+        return XY.responseData(blogService.detailedBlog(FunUtil.fistLong(id)));
+    }
+
+
+    @ApiOperation(value = "获取最新公告")
+    @ApiOperationSupport(order = 6)
+    @ApiLog("获取最新公告")
+    @GetMapping("/news")
+    public XY<Blog> newsBlog(String sortId) {
+        return XY.responseData(blogService.newsBlog(FunUtil.fistLong(sortId)));
+    }
 
 
 }

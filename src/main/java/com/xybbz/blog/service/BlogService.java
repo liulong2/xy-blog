@@ -24,4 +24,8 @@ public interface BlogService extends BaseService<Blog> {
     boolean updateBlog(BlogVO blogVO);
 
     IPage<Blog> blogPage(BlogVO blogVO, IPage<Blog> fistPage);
+
+    Blog detailedBlog(Long fistLong);
+
+    Blog newsBlog(Long fistLong);
 }

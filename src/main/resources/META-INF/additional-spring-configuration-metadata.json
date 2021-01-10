@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "MyKnife4j",
+      "type": "java.lang.String",
+      "description": "设置knife4j"
+  }
+] }
