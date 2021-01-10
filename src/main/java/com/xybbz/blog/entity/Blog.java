@@ -28,10 +28,6 @@ public class Blog extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "博客id")
-    @TableId(value = "blog_id", type = IdType.ASSIGN_ID)
-    private Long blogId;
-
     @ApiModelProperty(value = "博客标题")
     private String blogTitle;
 

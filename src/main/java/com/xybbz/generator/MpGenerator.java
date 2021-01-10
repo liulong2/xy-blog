@@ -1,5 +1,6 @@
 package com.xybbz.generator;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -24,7 +25,7 @@ import java.util.List;
 import static com.xybbz.generator.PageConstant.BASIS;
 
 /**
- * 简陋的代码生成器
+ * 简陋的代码生成器, 这是一个咸鱼的残次品
  * @author 刘梦龙
  */
 @Data
@@ -135,6 +136,7 @@ public class MpGenerator {
         strategy.setSuperServiceImplClass(BaseServiceImpl.class);
         strategy.setSuperServiceClass(BaseService.class);
         //设置自定义基础的Entity类，公共字段  解开后typeid注解不存在
+        strategy.setSuperEntityColumns(ArrayUtil.toArray(BASIS,String.class));
 
         BASIS.forEach(strategy::setSuperEntityColumns);
 
@@ -143,6 +145,7 @@ public class MpGenerator {
         //表名前缀pc.getModuleName() +
         // TODO: 2020/4/5 删除第一个下划线之前的字母
         strategy.setTablePrefix(dataSourceConfigVO.getPrefix());
+
         mpg.setStrategy(strategy);
 
 
