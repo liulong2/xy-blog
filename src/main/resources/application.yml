@@ -11,9 +11,9 @@ spring:
   application:
     name: lalal
   datasource:
-    url: jdbc:mysql://localhost:3306/xy_blog?characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://rm-2ze3ab5f9bgcbx9m10o.mysql.rds.aliyuncs.com:3306/xy_blog?characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
+    username: liu
+    password: 03145215LL
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
