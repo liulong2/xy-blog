@@ -1,7 +1,6 @@
 package com.xybbz.security.config;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ArrayUtil;
 import com.xybbz.body.entity.PlatformNew;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.xybbz.util.TokenUtil.getPlatformNew;

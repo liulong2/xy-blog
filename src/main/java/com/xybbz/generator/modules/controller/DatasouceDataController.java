@@ -10,10 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -33,7 +32,7 @@ public class DatasouceDataController {
     @ApiOperationSupport(order = 1,ignoreParameters = {"id","isDelete","updateTime","createTime"})
     @ApiOperation(value = "新增", notes = "传入data对象")
     @PostMapping("/save")
-    public XY saveObj(DatasouceData datasouceData) {
+    public XY saveObj(@Valid @RequestBody DatasouceData datasouceData) {
         return XY.responseStatus(datasoucedataService.save(datasouceData));
     }
 
