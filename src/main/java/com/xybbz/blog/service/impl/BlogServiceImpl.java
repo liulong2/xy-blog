@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xybbz.auth.entity.UserBlog;
 import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.blog.entity.Blog;
+import com.xybbz.blog.entity.BlogReply;
 import com.xybbz.blog.mapper.BlogDAO;
+import com.xybbz.blog.service.BlogReplyService;
 import com.xybbz.blog.service.BlogService;
 import com.xybbz.blog.vo.BlogVO;
 import com.xybbz.util.BaseEntity;
@@ -35,8 +37,8 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
     @Autowired
     private UserBlogService userBlogService;
 
-   /* @Autowired
-    private*/
+    @Autowired
+    private BlogReplyService blogReplyService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -74,7 +76,14 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
             blogVO.setUserIcon(userBlog.getUsrAvatar());
         }
         //获得最后发帖人
-
+        BlogReply blogReply = blogReplyService.lambdaQuery().eq(BlogReply::getBlogId, blogVO.getId())
+                .orderByDesc(BlogReply::getReplyTime).last("limit 1").one();
+        if (Objects.nonNull(blogReply)) {
+            UserBlog userBlogNew = userBlogService.getById(blogReply.getReplyUserId());
+            if (Objects.nonNull(userBlogNew)) {
+                blogVO.setLastReply(userBlogNew.getUserName());
+            }
+        }
         return blogVO;
     }
 

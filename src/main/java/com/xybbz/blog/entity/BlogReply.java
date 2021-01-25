@@ -2,14 +2,18 @@ package com.xybbz.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xybbz.util.BaseEntity;
 import java.time.LocalTime;
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -43,8 +47,10 @@ public class BlogReply extends BaseEntity {
     @ApiModelProperty(value = "回复内容")
     private String replyContext;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "回复时间")
-    private LocalTime replyTime;
+    private Date replyTime;
 
 
 
