@@ -62,7 +62,7 @@ public class BlogController {
     @ApiOperationSupport(order = 4)
     @ApiLog("获取列表")
     @GetMapping("/page")
-    public XY<IPage<Blog>> blogPage(BlogVO blogVO, Page page) {
+    public XY<IPage<BlogVO>> blogPage(BlogVO blogVO, Page page) {
         return XY.responseData(blogService.blogPage(blogVO,FunUtil.fistPage(page)));
     }
 

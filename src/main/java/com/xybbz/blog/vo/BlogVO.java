@@ -1,6 +1,7 @@
 package com.xybbz.blog.vo;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -21,6 +22,12 @@ import com.xybbz.blog.entity.Blog;
 public class BlogVO extends Blog {
 
     private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "用户名称")
+    private String userName;
+    @ApiModelProperty(value = "用户头像")
+    private String userIcon;
+    @ApiModelProperty(value = "最后回复")
+    private String lastReply;
 
 
 }

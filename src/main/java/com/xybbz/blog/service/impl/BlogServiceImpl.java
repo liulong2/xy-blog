@@ -1,17 +1,25 @@
 package com.xybbz.blog.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xybbz.auth.entity.UserBlog;
+import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.blog.entity.Blog;
 import com.xybbz.blog.mapper.BlogDAO;
 import com.xybbz.blog.service.BlogService;
 import com.xybbz.blog.vo.BlogVO;
 import com.xybbz.util.BaseEntity;
 import com.xybbz.util.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -24,6 +32,11 @@ import java.util.List;
 @Service
 public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements BlogService {
 
+    @Autowired
+    private UserBlogService userBlogService;
+
+   /* @Autowired
+    private*/
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -44,9 +57,25 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
     }
 
     @Override
-    public IPage<Blog> blogPage(BlogVO blogVO, IPage<Blog> fistPage) {
+    public IPage<BlogVO> blogPage(BlogVO blogVO, IPage<Blog> fistPage) {
         IPage<Blog> page = page(fistPage, new LambdaQueryWrapper<>(blogVO));
-        return page;
+        List<BlogVO> collect = page.getRecords().stream().map(this::copyBlogVO).collect(Collectors.toList());
+
+        IPage<BlogVO> pageVo = new Page(page.getCurrent(), page.getSize(), page.getTotal());
+        pageVo.setRecords(collect);
+        return pageVo;
+    }
+
+    private BlogVO copyBlogVO(Blog blog) {
+        BlogVO blogVO = BeanUtil.copyProperties(blog, BlogVO.class);
+        UserBlog userBlog = userBlogService.getById(blogVO.getBlogAuthorId());
+        if (Objects.nonNull(userBlog)) {
+            blogVO.setUserName(userBlog.getUserName());
+            blogVO.setUserIcon(userBlog.getUsrAvatar());
+        }
+        //获得最后发帖人
+
+        return blogVO;
     }
 
     @Override
