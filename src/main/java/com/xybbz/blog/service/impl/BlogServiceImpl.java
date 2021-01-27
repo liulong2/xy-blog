@@ -83,6 +83,7 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
             if (Objects.nonNull(userBlogNew)) {
                 blogVO.setLastReply(userBlogNew.getUserName());
             }
+            blogVO.setLastTime(blogReply.getReplyTime());
         }
         return blogVO;
     }
