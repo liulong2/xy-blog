@@ -36,6 +36,8 @@ public class BlogVO extends Blog {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastTime;
+    @ApiModelProperty(value = "回复数量")
+    private Long replayContent;
 
 
 }

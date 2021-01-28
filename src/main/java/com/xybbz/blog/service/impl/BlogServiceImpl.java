@@ -85,6 +85,8 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
             }
             blogVO.setLastTime(blogReply.getReplyTime());
         }
+        Integer count = blogReplyService.lambdaQuery().eq(BlogReply::getBlogId, blogVO.getId()).count();
+        blogVO.setReplayContent(Long.valueOf(count));
         return blogVO;
     }
 
