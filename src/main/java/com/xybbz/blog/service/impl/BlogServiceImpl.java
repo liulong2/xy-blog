@@ -8,7 +8,7 @@ import com.xybbz.auth.entity.UserBlog;
 import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.blog.entity.Blog;
 import com.xybbz.blog.entity.BlogReply;
-import com.xybbz.blog.mapper.BlogDAO;
+import com.xybbz.mapper.BlogDAO;
 import com.xybbz.blog.service.BlogReplyService;
 import com.xybbz.blog.service.BlogService;
 import com.xybbz.blog.vo.BlogVO;
@@ -18,9 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +39,9 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
 
     @Autowired
     private BlogReplyService blogReplyService;
+
+    @Autowired
+    private BlogDAO blogDAO;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -69,15 +72,21 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
     }
 
     private BlogVO copyBlogVO(Blog blog) {
+
         BlogVO blogVO = BeanUtil.copyProperties(blog, BlogVO.class);
+
         UserBlog userBlog = userBlogService.getById(blogVO.getBlogAuthorId());
+
         if (Objects.nonNull(userBlog)) {
             blogVO.setUserName(userBlog.getUserName());
             blogVO.setUserIcon(userBlog.getUsrAvatar());
         }
+
         //获得最后发帖人
+
         BlogReply blogReply = blogReplyService.lambdaQuery().eq(BlogReply::getBlogId, blogVO.getId())
                 .orderByDesc(BlogReply::getReplyTime).last("limit 1").one();
+
         if (Objects.nonNull(blogReply)) {
             UserBlog userBlogNew = userBlogService.getById(blogReply.getReplyUserId());
             if (Objects.nonNull(userBlogNew)) {
@@ -85,19 +94,36 @@ public class BlogServiceImpl extends BaseServiceImpl<BlogDAO, Blog> implements B
             }
             blogVO.setLastTime(blogReply.getReplyTime());
         }
+        long nanoTime = System.nanoTime();
         Integer count = blogReplyService.lambdaQuery().eq(BlogReply::getBlogId, blogVO.getId()).count();
         blogVO.setReplayContent(Long.valueOf(count));
+        long toMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - nanoTime);
+        System.out.println(toMillis);
         return blogVO;
     }
 
     @Override
-    public Blog detailedBlog(Long fistLong) {
-        return getById(fistLong);
+    public BlogVO detailedBlog(Long fistLong) {
+        return copyBlogVO(getById(fistLong));
     }
 
     @Override
     public Blog newsBlog(Long fistLong) {
         List<Blog> list = lambdaQuery().eq(Blog::getBlogSortId, fistLong).orderByAsc(BaseEntity::getCreateTime).list();
         return list.get(0);
+    }
+
+    @Override
+    public IPage<BlogVO> sortListPage(String sortName,IPage<Blog> page) {
+
+        List<Blog> blogs = blogDAO.selectBySortName(sortName, page);
+
+        List<BlogVO> collect = blogs.stream().map(this::copyBlogVO).collect(Collectors.toList());
+//        List<BlogVO> collect = blogs.stream().map(ite -> BeanUtil.copyProperties(ite, BlogVO.class)).collect(Collectors.toList());
+
+        IPage<BlogVO> pageVo = new Page(page.getCurrent(), page.getSize(), page.getTotal());
+
+        pageVo.setRecords(collect);
+        return pageVo;
     }
 }

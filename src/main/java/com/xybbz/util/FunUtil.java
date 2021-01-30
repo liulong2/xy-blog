@@ -54,7 +54,6 @@ public class FunUtil {
             });
             myPage.setOrders(orders);
         }
-
         return myPage;
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xybbz.mapper.BlogDAO">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xybbz.blog.entity.Blog">
+        <id column="id" property="id" />
+        <result column="blog_title" property="blogTitle" />
+        <result column="blog_author_id" property="blogAuthorId" />
+        <result column="blog_sort_id" property="blogSortId" />
+        <result column="blog_coding" property="blogCoding" />
+        <result column="blog_context" property="blogContext" />
+        <result column="blog_relay_time" property="blogRelayTime" />
+        <result column="add_time" property="addTime" />
+        <result column="is_hide" property="isHide" />
+        <result column="is_reply" property="isReply" />
+        <result column="is_delete" property="isDelete" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, blog_title, blog_author_id, blog_sort_id, blog_coding, blog_context,blog_relay_time, add_time, is_hide, is_reply, is_delete, update_time, create_time,
+    </sql>
+   <!-- <select id="selectBySortName" resultMap="BaseResultMap">
+        select * from xy_blog bl
+        left join xy_sort so on bl.blog_sort_id = so.id
+        where bl.is_delete = 2 and so.is_delete = 2
+        <if test="sortName != null">
+            and so.sort_name = #{sortName}
+        </if>
+        order by bl.blog_relay_time DESC , bl.add_time desc
+    </select>-->
+    <select id="selectBySortName" resultMap="BaseResultMap">
+        select * from
+        xy_blog bl where bl.is_delete = 2
+        <if test="sortName != null">
+            and bl.blog_sort_id = (select id from xy_sort so where so.sort_name = #{sortName} and so.is_delete = 2 )
+        </if>
+        order by bl.blog_relay_time DESC , bl.add_time desc
+    </select>
+
+
+</mapper>

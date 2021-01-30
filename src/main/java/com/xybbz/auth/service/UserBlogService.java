@@ -2,6 +2,7 @@ package com.xybbz.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xybbz.auth.entity.UserBlog;
+import com.xybbz.util.BaseService;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import com.xybbz.auth.entity.UserBlog;
  * @author liu
  * @since 2020-12-28
  */
-public interface UserBlogService extends IService<UserBlog> {
+public interface UserBlogService extends BaseService<UserBlog> {
 
     boolean addUser(UserBlog userBlog);
 

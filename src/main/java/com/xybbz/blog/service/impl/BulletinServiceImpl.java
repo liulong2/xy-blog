@@ -1,7 +1,7 @@
 package com.xybbz.blog.service.impl;
 
 import com.xybbz.blog.entity.Bulletin;
-import com.xybbz.blog.mapper.BulletinDAO;
+import com.xybbz.mapper.BulletinDAO;
 import com.xybbz.blog.service.BulletinService;
 import com.xybbz.enums.YesNoEnum;
 import com.xybbz.util.BaseServiceImpl;

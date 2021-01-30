@@ -16,8 +16,8 @@ spring:
     password: 03145215LL
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-  jackson:
-    default-property-inclusion: non_null
+#  jackson:
+#    default-property-inclusion: non_null
 
 myknife4j: com.xybbz.auth.controller, com.xybbz.auth.controller, com.xybbz.blog.controller
 
@@ -32,7 +32,7 @@ knife4j:
       locations: classpath:com/xybbz/auth/controller/*
 
 mybatis-plus:
-  mapper-locations: classpath:com/xybbz/**/**/mapper/*Mapper.xml
+  mapper-locations: classpath*:com/xybbz/mapper/*Mapper.xml
   global-config:
     db-config:
       id-type: assign_id

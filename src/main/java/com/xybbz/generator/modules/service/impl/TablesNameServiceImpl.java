@@ -1,12 +1,10 @@
 package com.xybbz.generator.modules.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xybbz.generator.modules.entity.DatasouceData;
 import com.xybbz.generator.modules.entity.TablesName;
-import com.xybbz.generator.modules.mapper.TablesNameDAO;
+import com.xybbz.mapper.TablesNameDAO;
 import com.xybbz.generator.modules.service.DatasouceDataService;
 import com.xybbz.generator.modules.service.TablesNameService;
-import com.xybbz.generator.modules.service.vo.DatasouceDataVO;
 import com.xybbz.generator.modules.service.vo.TablesNameVO;
 import com.xybbz.generator.modules.service.vo.TablesParamsVO;
 import com.xybbz.generator.table.TableData;
@@ -14,18 +12,16 @@ import com.xybbz.generator.table.TableNameVO;
 import com.xybbz.util.BaseServiceImpl;
 import com.xybbz.util.FunUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * <p>
- * 数据库表名 服务实现类 
+ * 数据库表名 服务实现类
  * </p>
  *
  * @author liu

@@ -18,11 +18,13 @@ import java.util.List;
 public class BaseServiceImpl<M extends BaseMapper<T>,T extends BaseEntity> extends ServiceImpl<M, T>
         implements BaseService<T> {
 
+    @Override
     public boolean save(T entity) {
         updateEntity(entity);
         return super.save(entity);
     }
 
+    @Override
     public boolean updateById(T entity) {
         updateEntity(entity);
         return super.updateById(entity);
@@ -38,6 +40,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>,T extends BaseEntity> exten
         return super.saveOrUpdateBatch(entityList,batchSize);
     }
 
+    @Override
     public boolean saveOrUpdate(T entity) {
         updateEntity(entity);
         return super.saveOrUpdate(entity);

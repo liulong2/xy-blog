@@ -1,7 +1,7 @@
 package com.xybbz.blog.service.impl;
 
 import com.xybbz.blog.entity.BlogReply;
-import com.xybbz.blog.mapper.BlogReplyDAO;
+import com.xybbz.mapper.BlogReplyDAO;
 import com.xybbz.blog.service.BlogReplyService;
 import com.xybbz.util.BaseServiceImpl;
 import org.springframework.stereotype.Service;

@@ -47,6 +47,9 @@ public class Blog extends BaseEntity {
     @ApiModelProperty(value = "博客内容")
     private String blogContext;
 
+    @ApiModelProperty(value = "最后回复时间")
+    private Date blogRelayTime;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "添加时间")

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xybbz.mapper.TablesNameDAO">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xybbz.generator.modules.entity.TablesName">
+        <id column="id" property="id" />
+        <result column="data_source_id" property="dataSourceId" />
+        <result column="table_name" property="tableName" />
+        <result column="table_prefix" property="tablePrefix" />
+        <result column="is_delete" property="isDelete" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_time" property="createTime" />
+        <result column="table_remake" property="tableRemake" />
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, data_source_id, table_name,table_remake, table_prefix, is_delete, update_time, create_time
+    </sql>
+
+
+</mapper>

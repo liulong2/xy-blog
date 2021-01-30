@@ -22,5 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlogReplyController {
     @Autowired
     private BlogReplyService blogreplyService;
+    //添加回复的需要更新blog表回复时间
 
 }

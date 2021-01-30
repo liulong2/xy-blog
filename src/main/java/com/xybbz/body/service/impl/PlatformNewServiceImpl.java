@@ -2,7 +2,7 @@ package com.xybbz.body.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xybbz.body.entity.PlatformNew;
-import com.xybbz.body.mapper.PlatformNewDAO;
+import com.xybbz.mapper.PlatformNewDAO;
 import com.xybbz.body.service.PlatformNewService;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,12 @@
 package com.xybbz.auth.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xybbz.auth.entity.UserBlog;
-import com.xybbz.auth.mapper.UserBlogDAO;
+import com.xybbz.mapper.UserBlogDAO;
 import com.xybbz.auth.service.UserBlogService;
 import com.xybbz.body.entity.PlatformNew;
 import com.xybbz.security.config.JwtNewUtils;
+import com.xybbz.util.BaseServiceImpl;
 import com.xybbz.util.WebServletUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import static com.xybbz.util.TokenUtil.getPlatformNew;
  * @since 2020-12-28
  */
 @Service
-public class UserBlogServiceImpl extends ServiceImpl<UserBlogDAO, UserBlog> implements UserBlogService {
+public class UserBlogServiceImpl extends BaseServiceImpl<UserBlogDAO, UserBlog> implements UserBlogService {
 
 
     @Override
@@ -38,8 +38,6 @@ public class UserBlogServiceImpl extends ServiceImpl<UserBlogDAO, UserBlog> impl
     //不使用redis
     @Override
     public boolean logOut() {
-
-
         return false;
     }
 

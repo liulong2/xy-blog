@@ -1,6 +1,6 @@
 package com.xybbz.properties;
 
-import com.xybbz.modules.log.enums.LogLevelEnum;
+import com.xybbz.log.enums.LogLevelEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,11 +1,10 @@
 package com.xybbz.generator.modules.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xybbz.generator.MpGenerator;
 import com.xybbz.generator.modules.entity.DatasouceData;
 import com.xybbz.generator.modules.entity.TablesName;
-import com.xybbz.generator.modules.mapper.DatasouceDataDAO;
+import com.xybbz.mapper.DatasouceDataDAO;
 import com.xybbz.generator.modules.service.DatasouceDataService;
 import com.xybbz.generator.modules.service.TablesNameService;
 import com.xybbz.generator.table.DataSourceConfigVO;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**

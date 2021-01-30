@@ -1,7 +1,7 @@
 package com.xybbz.blog.service.impl;
 
 import com.xybbz.blog.entity.Sort;
-import com.xybbz.blog.mapper.SortDAO;
+import com.xybbz.mapper.SortDAO;
 import com.xybbz.blog.service.SortService;
 import com.xybbz.util.BaseServiceImpl;
 import org.springframework.stereotype.Service;

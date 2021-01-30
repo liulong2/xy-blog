@@ -70,7 +70,7 @@ public class BlogController {
     @ApiOperationSupport(order = 5)
     @ApiLog("详细信息")
     @GetMapping("/detailed")
-    public XY<Blog> detailedBlog(String id) {
+    public XY<BlogVO> detailedBlog(String id) {
         return XY.responseData(blogService.detailedBlog(FunUtil.fistLong(id)));
     }
 
@@ -83,5 +83,12 @@ public class BlogController {
         return XY.responseData(blogService.newsBlog(FunUtil.fistLong(sortId)));
     }
 
+    @ApiOperation(value = "根据类型查询列表", notes = "传入类型id")
+    @ApiOperationSupport(order = 7)
+    @ApiLog("根据类型查询列表")
+    @GetMapping("/sort/list/page")
+    public XY<IPage<BlogVO>> sortListPage(String sortName,Page page) {
+        return XY.responseData(blogService.sortListPage(sortName,FunUtil.fistPage(page)));
+    }
 
 }

@@ -25,7 +25,9 @@ public interface BlogService extends BaseService<Blog> {
 
     IPage<BlogVO> blogPage(BlogVO blogVO, IPage<Blog> fistPage);
 
-    Blog detailedBlog(Long fistLong);
+    BlogVO detailedBlog(Long fistLong);
 
     Blog newsBlog(Long fistLong);
+
+    IPage<BlogVO> sortListPage(String sortName, IPage<Blog> fistPage);
 }

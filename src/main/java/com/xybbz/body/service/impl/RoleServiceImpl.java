@@ -2,7 +2,7 @@ package com.xybbz.body.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xybbz.body.entity.Role;
-import com.xybbz.body.mapper.RoleDAO;
+import com.xybbz.mapper.RoleDAO;
 import com.xybbz.body.service.RoleService;
 import org.springframework.stereotype.Service;
 
