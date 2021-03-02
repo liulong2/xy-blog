@@ -49,9 +49,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-        if (StrUtil.isNotBlank(userBlog.getAuthInfo())) {
+        if (StrUtil.isNotBlank(userBlog.getRoleInfo())) {
 
-            ArrayList<String> roles = CollectionUtil.toList(userBlog.getAuthInfo().split(","));
+            ArrayList<String> roles = CollectionUtil.toList(userBlog.getRoleInfo().split(","));
 
             RoleService roleService = SpringUtil.context.getBean(RoleService.class);
 

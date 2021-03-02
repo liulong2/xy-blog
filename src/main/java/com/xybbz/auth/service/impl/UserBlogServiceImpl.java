@@ -32,6 +32,7 @@ public class UserBlogServiceImpl extends BaseServiceImpl<UserBlogDAO, UserBlog> 
     @Transactional(rollbackFor = Exception.class)
     public boolean addUser(UserBlog userBlog) {
         userBlog.setPassword(new BCryptPasswordEncoder().encode(userBlog.getPassword()));
+
         return save(userBlog);
     }
 
