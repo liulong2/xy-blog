@@ -15,5 +15,5 @@ import com.xybbz.util.BaseService;
  */
 public interface BlogReplyService extends BaseService<BlogReply> {
 
-    IPage<BlogReplyVO> getByBlogId(Long fistLong, IPage<Object> fistPage);
+    IPage<BlogReplyVO> getByBlogId(Long fistLong, IPage<BlogReplyVO> fistPage);
 }

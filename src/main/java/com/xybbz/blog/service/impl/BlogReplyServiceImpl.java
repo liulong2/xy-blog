@@ -21,7 +21,7 @@ public class BlogReplyServiceImpl extends BaseServiceImpl<BlogReplyDAO, BlogRepl
 
 
     @Override
-    public IPage<BlogReplyVO> getByBlogId(Long fistLong, IPage<Object> fistPage) {
+    public IPage<BlogReplyVO> getByBlogId(Long fistLong, IPage<BlogReplyVO> fistPage) {
 
         return null;
     }
